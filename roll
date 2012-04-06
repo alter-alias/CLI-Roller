@@ -1,0 +1,37 @@
+input=${1};
+
+number=${input%%d*} #gets the number of dice to roll
+rest=${input#*d}	#gets everything after d for the next 2 operations
+size=${rest%%+*}	#gets size of dice to be rolled
+addition=${rest#*+}	#gets number to add to roll if any
+
+count=0 #used in while method
+total=0 #sum of dice rolls and addition
+
+while [ $count -lt $number ];do
+	let count=count+1
+	roll=$((RANDOM%$size+1))
+	let total=total+roll
+	
+	if [[ ${2} = "-v" ]]
+	then
+		echo $roll
+	fi
+
+done
+
+if [[ $input != *+* ]]
+then
+	let addition=0
+fi
+
+echo -e "Rolled\t"$number"d"$size"+"$addition
+echo -e "\t"$total"+"$addition
+if [[ $input = *+* ]]
+then
+	let total=total+addition
+fi
+echo "Total:"$total
+
+#todo, add verbose function, error correction
+
